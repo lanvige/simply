@@ -2,6 +2,8 @@
 lock '3.1.0'
 
 set :user, 'deployer'
+set :use_sudo, false
+
 set :application, 'simply'
 set :repo_url, 'https://github.com/lanvige/simply.git'
 
@@ -38,6 +40,18 @@ set :pty, true
 set :keep_releases, 5
 
 namespace :deploy do
+
+
+  task :setup_config do
+    on roles(:app) do
+    execute "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
+    execute sudo "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
+    run "mkdir -p #{shared_path}/config"
+    put File.read("config/database.example.yml"), "#{shared_path}/config/database.yml"
+    puts "Now edit the config files in #{shared_path}."
+  end
+
+  after "deploy:setup", "deploy:setup_config"
 
   desc 'Restart application'
   task :restart do
