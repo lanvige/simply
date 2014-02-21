@@ -45,7 +45,7 @@ namespace :deploy do
   task :setup_config do
     on roles(:app) do
       execute "echo 'ss'"
-      # execute "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
+      execute "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{fetch :application}"
       # execute "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
       # execute "mkdir -p #{shared_path}/config"
       # put File.read("config/database.example.yml"), "#{shared_path}/config/database.yml"
@@ -53,7 +53,7 @@ namespace :deploy do
     end
   end
 
-  after "deploy:setup", "deploy:setup_config"
+  # after "deploy:setup", "deploy:setup_config"
   # after 'deploy:updated', 'deploy:db_migrate'
 
   desc 'Restart application'
