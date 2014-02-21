@@ -6,6 +6,7 @@ set :use_sudo, false
 
 set :application, 'simply'
 set :repo_url, 'https://github.com/lanvige/simply.git'
+set :branch, 'master'
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
@@ -37,6 +38,10 @@ set :pty, true
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
+
+remote_file 'config/test.conf' => '/config/test.conf', roles: :app
+
+
 set :keep_releases, 5
 
 namespace :deploy do
@@ -44,8 +49,8 @@ namespace :deploy do
   desc "setup unicorn"
   task :setup_config do
     on roles(:app) do
-      execute "echo 'ss'"
-      execute "#{sudo} ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{fetch :application}"
+      execute :sudo, "echo 'ss'"
+      execute :sudo, "#{sudo} ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{fetch :application}"
       # execute "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
       # execute "mkdir -p #{shared_path}/config"
       # put File.read("config/database.example.yml"), "#{shared_path}/config/database.yml"
