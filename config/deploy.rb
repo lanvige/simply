@@ -8,14 +8,14 @@ set :application, 'simply'
 set :repo_url, 'https://github.com/lanvige/simply.git'
 set :branch, 'master'
 
-# Default branch is :master
-# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
-
-# Default deploy_to directory is /var/www/my_app
 set :deploy_to, "/home/#{fetch :user}/apps/#{fetch :application}"
-
-# Default value for :scm is :git
 set :scm, :git
+
+set :format, :pretty
+set :log_level, :debug
+set :pty, true
+set :keep_releases, 5
+
 
 # Config for rbenv on server.
 set :rbenv_type, :user # or :system, depends on your rbenv setup
@@ -23,26 +23,15 @@ set :rbenv_ruby, '2.1.0'
 set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
 set :rbenv_map_bins, %w{rake gem bundle ruby rails}
 set :rbenv_roles, :all # default value
-
-
-set :format, :pretty
-set :log_level, :debug
-set :pty, true
-
-# Default value for :linked_files is []
-# set :linked_files, %w{config/database.yml}
-
-# Default value for linked_dirs is []
-# set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
-
-# Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
 
-remote_file 'config/test.conf' => '/config/test.conf', roles: :app
+# 把文件从shared里放入current目录里？why????
+set :linked_files, %w{config/database.yml}
+set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+# 把文件从本地复制到服务器上？
+remote_file 'config/test.conf' => 'config/test1.conf', roles: :app
 
-
-set :keep_releases, 5
 
 namespace :deploy do
 
@@ -50,7 +39,7 @@ namespace :deploy do
   task :setup_config do
     on roles(:app) do
       execute :sudo, "echo 'ss'"
-      execute :sudo, "#{sudo} ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{fetch :application}"
+      execute :sudo, "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{fetch :application}"
       # execute "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
       # execute "mkdir -p #{shared_path}/config"
       # put File.read("config/database.example.yml"), "#{shared_path}/config/database.yml"

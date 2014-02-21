@@ -1,8 +1,8 @@
-role :app, %w{192.168.1.62}
-role :web, %w{192.168.1.62}
-role :db,  %w{192.168.1.62}
+role :app, %w{10.0.0.11}
+role :web, %w{10.0.0.11}
+role :db,  %w{10.0.0.11}
 
-server '192.168.1.62',
+server '10.0.0.11',
   roles: %w{app},
   ssh_options: {
     user: 'deployer',
