@@ -5,16 +5,18 @@ set :user, 'deployer'
 set :use_sudo, false
 
 set :application, 'simply'
-set :repo_url, 'https://github.com/lanvige/simply.git'
-set :branch, 'master'
-
-set :deploy_to, "/home/#{fetch :user}/apps/#{fetch :application}"
 set :scm, :git
-
-set :format, :pretty
-set :log_level, :debug
-set :pty, true
+set :branch, 'master'
 set :keep_releases, 5
+set :repo_url, 'https://github.com/lanvige/simply.git'
+set :deploy_to, "/home/#{fetch :user}/apps/#{fetch :application}"
+
+# log
+set :format, :pretty
+set :log_level, :info
+
+set :pty, true
+
 
 
 # Config for rbenv on server.
@@ -27,10 +29,10 @@ set :rbenv_roles, :all # default value
 
 
 # 把文件从shared里放入current目录里？why????
-set :linked_files, %w{config/database.yml}
+set :linked_files, %w{config/database.yml config/application.yml}
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 # 把文件从本地复制到服务器上？
-remote_file 'config/test.conf' => 'config/test1.conf', roles: :app
+# remote_file 'config/test.conf' => 'config/test1.conf', roles: :app
 
 
 namespace :deploy do
