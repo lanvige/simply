@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-Simply::Application.config.secret_key_base = '381885f22f906007fbe0d681981be0e3f504a9f54a2774b43392b56481395b00ae81927bbd1e08f586b4bff9619c4694edc62233d83c0982ac433c3e7d163a43'
+Simply::Application.config.secret_key_base = '1e0f4ae96ba148ae181067cebc6861d8fbd191fb2ce8d66d7eb6b30434b75d6fdcffc3a22316bb797fa1cc5ae09868b65d5fe755fef966f7b0d50ab9a6a647dd'
