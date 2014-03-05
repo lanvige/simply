@@ -1,5 +1,5 @@
 APP_DIR = File.expand_path("../../", __FILE__)
-APP_NAME = simply
+APP_NAME = "simply"
 
 # This loads the application in the master process before forking
 # worker processes
